@@ -199,7 +199,7 @@ const PollPage = () => {
 
   return (
     <div
-      className={`flex items-center justify-center min-h-screen w-full transition-colors ${
+      className={`flex items-center  justify-center mt-4 min-h-screen w-full transition-colors ${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
@@ -207,7 +207,7 @@ const PollPage = () => {
 
       {/* Poll Container */}
       <div
-        className={`w-full max-w-2xl mx-4 md:mx-auto p-4 md:p-6 lg:p-8 shadow-lg rounded-lg transition-all ${
+        className={`w-full max-w-2xl relative m mx-4 md:mx-auto p-4 md:p-6 lg:p-8 shadow-lg rounded-lg transition-all ${
           darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
         }`}
       >
@@ -220,7 +220,7 @@ const PollPage = () => {
         </button>
 
         {/* Poll Question */}
-        <h2 className="text-xl md:text-2xl font-bold mb-4">
+        <h2 className="text-xl md:text-2xl mt-10 md:mt-6 lg:mt-2 font-bold mb-4">
           The Poll Question is:{" "}
           <span className="text-green-400">{poll.question}</span>
         </h2>

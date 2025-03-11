@@ -94,7 +94,7 @@ const CreatePoll = () => {
 
   return (
     <div
-      className={`flex items-center justify-center min-h-screen h-screen w-full px-4 sm:px-6 md:px-8 transition-colors ${
+      className={`flex items-center justify-center min-h-screen mt-4 h-screen w-full px-4 sm:px-6 md:px-8 transition-colors ${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
