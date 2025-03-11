@@ -50,11 +50,11 @@ const CreatePoll = () => {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
-          closeOnClick: false,
+          closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: `{${darkMode ? "dark" : "light"}}`,
+          theme: darkMode ? "dark" : "light",
         });
         setQuestion("");
         setOptions(["", ""]);
@@ -78,11 +78,11 @@ const CreatePoll = () => {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
-          closeOnClick: false,
+          closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: `{${darkMode ? "dark" : "light"}}`,
+          theme: darkMode ? "dark" : "light",
         });
         setLink("");
         setCopyButoon(false);

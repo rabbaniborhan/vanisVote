@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { AppContext } from "../context/AppContext";
 
 const PollPage = () => {
@@ -25,28 +25,181 @@ const PollPage = () => {
 
   // Handle voting
   const handleVote = async () => {
-    if (selectedOption === null) return;
-    await axios.put(`${import.meta.env.VITE_API_URL}/api/poll/${id}/vote`, {
-      optionIndex: selectedOption,
-    });
-    fetchPoll();
+    if (selectedOption === null) {
+      toast.warn("Please select an option before voting!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+      return;
+    }
+
+    try {
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/poll/${id}/vote`, {
+        optionIndex: selectedOption,
+      });
+
+      toast.success("Vote submitted successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+
+      fetchPoll(); // Refresh poll data
+    } catch (error) {
+      toast.error("Failed to submit vote. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+      console.error("Voting error:", error);
+    }
   };
 
   // Handle comment submission
   const handleCommentSubmit = async () => {
+    if (comment === "") {
+      toast.warn("Please write comment!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+      return;
+    }
     if (!comment.trim()) return;
-    await axios.put(`${import.meta.env.VITE_API_URL}/api/poll/${id}/comments`, {
-      text: comment,
-    });
-    setComment("");
-    fetchPoll();
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/poll/${id}/comments`,
+        {
+          text: comment,
+        }
+      );
+
+      setComment("");
+      fetchPoll();
+
+      toast.success("Comment submitted successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+
+      toast.error("Failed to submit comment. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+    }
   };
 
-  if (!poll) return <p className="text-center mt-4">Loading...</p>;
+  const handleLikeReact = async () => {
+    try {
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/poll/${id}/like`);
+      fetchPoll();
+
+      toast.success("Like submitted successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light", // Fixed theme format
+      });
+    } catch (error) {
+      console.error("Error submitting like:", error);
+      toast.error("Failed to submit like. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+    }
+  };
+
+  const handleTrendingReact = async () => {
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/poll/${id}/trending`
+      );
+      fetchPoll();
+
+      toast.success("Like submitted successfully!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light", // Fixed theme format
+      });
+    } catch (error) {
+      console.error("Error submitting like:", error);
+      toast.error("Failed to submit like. Please try again.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: darkMode ? "dark" : "light",
+      });
+    }
+  };
+
+  if (!poll)
+    return (
+      <p
+        className={`flex text-center items-center justify-center  h-screen   mt-4 w-full transition-colors ${
+          darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+        }`}
+      >
+        Loading...
+      </p>
+    );
 
   return (
     <div
-      className={`flex items-center justify-center  w-full transition-colors ${
+      className={`flex items-center justify-center   mt-4 w-full transition-colors ${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
@@ -92,12 +245,7 @@ const PollPage = () => {
             </div>{" "}
             <div className="mt-6 flex justify-end space-x-4">
               <button
-                onClick={async () => {
-                  await axios.put(
-                    `${import.meta.env.VITE_API_URL}/api/poll/${id}/like`
-                  );
-                  fetchPoll();
-                }}
+                onClick={() => handleLikeReact()}
                 className={`flex items-center cursor-pointer space-x-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all ${
                   darkMode
                     ? "bg-gray-700 text-white"
@@ -108,6 +256,7 @@ const PollPage = () => {
                 <span>{poll.likes}</span>
               </button>
               <button
+                onClick={() => handleTrendingReact()}
                 className={`flex items-center cursor-pointer space-x-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all ${
                   darkMode
                     ? "bg-gray-700 text-white"
@@ -154,10 +303,34 @@ const PollPage = () => {
                   </label>
                 </div>
               ))}
-            </div>{" "}
+            </div>
+            <div className="mt-3 mb-6 flex justify-end space-x-4">
+              <button
+                onClick={() => handleLikeReact()}
+                className={`flex items-center cursor-pointer space-x-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all ${
+                  darkMode
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-100 text-gray-900"
+                }`}
+              >
+                <span>👍</span>
+                <span>{poll.likes}</span>
+              </button>
+              <button
+                onClick={() => handleTrendingReact()}
+                className={`flex items-center cursor-pointer space-x-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all ${
+                  darkMode
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-100 text-gray-900"
+                }`}
+              >
+                <span>🔥</span>
+                <span>{poll.trending}</span>
+              </button>
+            </div>
             <button
               onClick={handleVote}
-              className="bg-blue-500 text-white font-semibold p-3 rounded-lg w-full mt-4 hover:bg-blue-600 transition-all"
+              className="bg-blue-500 text-white cursor-pointer font-semibold p-3 rounded-lg w-full mt-4 hover:bg-blue-600 transition-all"
             >
               Vote
             </button>
@@ -180,7 +353,7 @@ const PollPage = () => {
           />
           <button
             onClick={handleCommentSubmit}
-            className="bg-green-500 text-white p-3 rounded-lg w-full mt-2 hover:bg-green-600 transition-all"
+            className="bg-green-500 text-white p-3 cursor-pointer rounded-lg w-full mt-2 hover:bg-green-600 transition-all"
           >
             Submit Comment
           </button>
@@ -204,8 +377,6 @@ const PollPage = () => {
             ))}
           </div>
         </div>
-
-        {/* Reactions Section */}
       </div>
     </div>
   );
