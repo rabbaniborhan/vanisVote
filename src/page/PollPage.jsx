@@ -13,7 +13,9 @@ const PollPage = () => {
 
   // Fetch poll data
   const fetchPoll = async () => {
-    const res = await axios.get(`http://localhost:5000/api/poll/${id}`);
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/poll/${id}`
+    );
     setPoll(res.data);
   };
 
@@ -24,7 +26,7 @@ const PollPage = () => {
   // Handle voting
   const handleVote = async () => {
     if (selectedOption === null) return;
-    await axios.put(`http://localhost:5000/api/poll/${id}/vote`, {
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/poll/${id}/vote`, {
       optionIndex: selectedOption,
     });
     fetchPoll();
@@ -33,7 +35,7 @@ const PollPage = () => {
   // Handle comment submission
   const handleCommentSubmit = async () => {
     if (!comment.trim()) return;
-    await axios.put(`http://localhost:5000/api/poll/${id}/comments`, {
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/poll/${id}/comments`, {
       text: comment,
     });
     setComment("");
@@ -70,19 +72,53 @@ const PollPage = () => {
         </h2>
 
         {poll.resultsVisible ? (
-          <div
-            className={`mt-6 p-4 rounded-lg shadow-md ${
-              darkMode ? "bg-gray-700 text-white" : "bg-gray-50 text-gray-900"
-            }`}
-          >
-            <h3 className="font-bold mb-2">Poll Results</h3>
-            {poll.options.map((opt, index) => (
-              <div key={index} className="flex justify-between p-2 rounded-lg">
-                <span>{opt.text}</span>
-                <span>{opt.votes} votes</span>
-              </div>
-            ))}
-          </div>
+          <>
+            {" "}
+            <div
+              className={`mt-6 p-4 rounded-lg shadow-md ${
+                darkMode ? "bg-gray-700 text-white" : "bg-gray-50 text-gray-900"
+              }`}
+            >
+              <h3 className="font-bold mb-2">Poll Results</h3>
+              {poll.options.map((opt, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between p-2 rounded-lg"
+                >
+                  <span>{opt.text}</span>
+                  <span>{opt.votes} votes</span>
+                </div>
+              ))}
+            </div>{" "}
+            <div className="mt-6 flex justify-end space-x-4">
+              <button
+                onClick={async () => {
+                  await axios.put(
+                    `${import.meta.env.VITE_API_URL}/api/poll/${id}/like`
+                  );
+                  fetchPoll();
+                }}
+                className={`flex items-center cursor-pointer space-x-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all ${
+                  darkMode
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-100 text-gray-900"
+                }`}
+              >
+                <span>👍</span>
+                <span>{poll.likes}</span>
+              </button>
+              <button
+                className={`flex items-center cursor-pointer space-x-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all ${
+                  darkMode
+                    ? "bg-gray-700 text-white"
+                    : "bg-gray-100 text-gray-900"
+                }`}
+              >
+                <span>🔥</span>
+                <span>{poll.trending}</span>
+              </button>
+            </div>
+          </>
         ) : (
           <>
             {" "}
@@ -170,31 +206,6 @@ const PollPage = () => {
         </div>
 
         {/* Reactions Section */}
-        <div className="mt-6 flex space-x-4">
-          <button
-            onClick={async () => {
-              await axios.put(`http://localhost:5000/api/poll/${id}/like`);
-              fetchPoll();
-            }}
-            className={`flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all ${
-              darkMode ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-900"
-            }`}
-          >
-            <span>👍</span>
-            <span>{poll.likes}</span>
-          </button>
-
-          {poll.trending && (
-            <div
-              className={`flex items-center space-x-2 p-2 rounded-lg ${
-                darkMode ? "bg-red-700 text-white" : "bg-red-100 text-red-900"
-              }`}
-            >
-              <span>🔥</span>
-              <span>Trending</span>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
