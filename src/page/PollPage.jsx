@@ -199,7 +199,7 @@ const PollPage = () => {
 
   return (
     <div
-      className={`flex items-center justify-center   mt-4 w-full transition-colors ${
+      className={`flex items-center justify-center min-h-screen w-full transition-colors ${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
@@ -207,26 +207,27 @@ const PollPage = () => {
 
       {/* Poll Container */}
       <div
-        className={`w-2xl relative py-10 mx-auto px-10 shadow-lg rounded-lg transition-all ${
+        className={`w-full max-w-2xl mx-4 md:mx-auto p-4 md:p-6 lg:p-8 shadow-lg rounded-lg transition-all ${
           darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
         }`}
       >
+        {/* Dark Mode Toggle */}
         <button
           onClick={() => setDarkMode(!darkMode)}
           className="absolute cursor-pointer top-4 right-4"
         >
           {darkMode ? "☀️" : "🌙"}
         </button>
+
         {/* Poll Question */}
-        <h2 className="text-2xl font-bold mb-4">
-          {" "}
+        <h2 className="text-xl md:text-2xl font-bold mb-4">
           The Poll Question is:{" "}
           <span className="text-green-400">{poll.question}</span>
         </h2>
 
         {poll.resultsVisible ? (
           <>
-            {" "}
+            {/* Poll Results */}
             <div
               className={`mt-6 p-4 rounded-lg shadow-md ${
                 darkMode ? "bg-gray-700 text-white" : "bg-gray-50 text-gray-900"
@@ -242,7 +243,9 @@ const PollPage = () => {
                   <span>{opt.votes} votes</span>
                 </div>
               ))}
-            </div>{" "}
+            </div>
+
+            {/* Reactions Section */}
             <div className="mt-6 flex justify-end space-x-4">
               <button
                 onClick={() => handleLikeReact()}
@@ -270,19 +273,18 @@ const PollPage = () => {
           </>
         ) : (
           <>
-            {" "}
+            {/* Poll Options */}
             <div className="space-y-2">
               {poll.options.map((opt, index) => (
                 <div
                   key={index}
-                  className={`flex items-center p-3 rounded-lg cursor-pointer transition-all 
-             ${
-               selectedOption === index
-                 ? "bg-blue-400 text-white shadow-lg"
-                 : darkMode
-                 ? "bg-gray-700 text-white hover:bg-gray-600"
-                 : "bg-gray-100 text-black hover:bg-gray-200"
-             }`}
+                  className={`flex items-center p-3 rounded-lg cursor-pointer transition-all ${
+                    selectedOption === index
+                      ? "bg-blue-400 text-white shadow-lg"
+                      : darkMode
+                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                      : "bg-gray-100 text-black hover:bg-gray-200"
+                  }`}
                   onClick={() => setSelectedOption(index)}
                 >
                   <input
@@ -304,6 +306,8 @@ const PollPage = () => {
                 </div>
               ))}
             </div>
+
+            {/* Reactions Section */}
             <div className="mt-3 mb-6 flex justify-end space-x-4">
               <button
                 onClick={() => handleLikeReact()}
@@ -328,6 +332,8 @@ const PollPage = () => {
                 <span>{poll.trending}</span>
               </button>
             </div>
+
+            {/* Vote Button */}
             <button
               onClick={handleVote}
               className="bg-blue-500 text-white cursor-pointer font-semibold p-3 rounded-lg w-full mt-4 hover:bg-blue-600 transition-all"
