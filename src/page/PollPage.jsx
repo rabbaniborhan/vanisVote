@@ -16,7 +16,7 @@ const PollPage = () => {
     const res = await axios.get(
       `${import.meta.env.VITE_API_URL}/api/poll/${id}`
     );
-    setPoll(res.data);
+    setPoll(res?.data);
   };
 
   useEffect(() => {
