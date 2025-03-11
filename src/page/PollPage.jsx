@@ -189,7 +189,7 @@ const PollPage = () => {
   if (!poll)
     return (
       <p
-        className={`flex text-center items-center justify-center  h-screen   mt-4 w-full transition-colors ${
+        className={`flex text-center items-center justify-center  h-screen  w-full transition-colors ${
           darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
         }`}
       >
@@ -207,7 +207,7 @@ const PollPage = () => {
 
       {/* Poll Container */}
       <div
-        className={`w-full max-w-2xl relative m mx-4 md:mx-auto p-4 md:p-6 lg:p-8 shadow-lg rounded-lg transition-all ${
+        className={`w-full max-w-2xl relative mt-4 mx-4 md:mx-auto p-4 md:p-6 lg:p-8 shadow-lg rounded-lg transition-all ${
           darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
         }`}
       >

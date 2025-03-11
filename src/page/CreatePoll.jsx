@@ -94,13 +94,13 @@ const CreatePoll = () => {
 
   return (
     <div
-      className={`flex items-center justify-center min-h-screen mt-4 h-screen w-full px-4 sm:px-6 md:px-8 transition-colors ${
+      className={`flex items-center justify-center min-h-screen  h-screen w-full px-4 sm:px-6 md:px-8 transition-colors ${
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
       }`}
     >
       <ToastContainer />
       <div
-        className={`max-w-lg w-full relative py-8 sm:py-10 md:py-12 px-6 sm:px-8 md:px-10 shadow-lg rounded-lg transition-all ${
+        className={`max-w-lg w-full relative py-8 mt-4 sm:py-10 md:py-12 px-6 sm:px-8 md:px-10 shadow-lg rounded-lg transition-all ${
           darkMode ? "bg-gray-800 text-white" : "bg-white text-black"
         }`}
       >
